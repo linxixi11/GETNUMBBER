@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>航都板环保柜钣金清单</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-section {
+            text-align: center;
+            padding: 20px;
+            border: 20px solid black;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="top-section">
+    <div class="input-group">
+        <select id="mySelect"></select>
+        <input type="text" id="input2" value="HT">
+        <input type="text" id="流水号" value="">
+    </div>
+    <div class="input-group">
+        <input type="text" id="中文名" placeholder="中文名称">
+    </div>
+    <div class="input-group">
+        <button id="取号键">取号键</button>
+    </div>
+</div>
+<h2>航都板环保柜钣金清单</h2>
+<table>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>图号</th>
+        <th>名称</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>1</td>
+        <td>8TH00001</td>
+        <td>8TH00001零件图</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>8TH00001</td>
+    </tr>
+    <tr>
+    </tr>
+    <tr>
+
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    const apiUrl = 'http://localhost:8080/metalPlate/list';
+    const select = document.getElementById('mySelect');
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const list = data.page.list;
+            list.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.number +"-"+item.name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+</script>
+</body>
+</html>
