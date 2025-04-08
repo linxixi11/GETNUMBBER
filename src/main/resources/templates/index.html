@@ -8,13 +8,15 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
 
         .top-section {
             text-align: center;
             padding: 20px;
-            border: 20px solid black;
+            border: 2px solid black;
+            c
+
         }
 
         .input-group {
@@ -46,6 +48,11 @@
         th {
             background-color: #f2f2f2;
         }
+        #tableSelect{
+            text-align: center;
+            padding: 20px;
+            border: 2px solid black;
+        }
     </style>
 </head>
 <body>
@@ -62,32 +69,53 @@
         <button id="取号键">取号键</button>
     </div>
 </div>
-<h2>航都板环保柜钣金清单</h2>
-<table>
-    <thead>
-    <tr>
-        <th>序号</th>
-        <th>图号</th>
-        <th>名称</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>1</td>
-        <td>8TH00001</td>
-        <td>8TH00001零件图</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>8TH00001</td>
-    </tr>
-    <tr>
-    </tr>
-    <tr>
+<div class="container mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">数据表格列表</h1>
+    <div class="flex justify-between mb-4">
+        <div>
+            <label for="pageSize" class="mr-2">每页显示数量:</label>
+            <select id="pageSize" class="border border-gray-300 p-1 rounded">
+                <option value="10">10 条</option>
+                <option value="20">20 条</option>
+                <option value="30">30 条</option>
+            </select>
+        </div>
+    </div>
+    <table id="dataTable" class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+        <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                编号
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                图号
+            </th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                名称
+            </th>
+        </tr>
+        </thead>
+        <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
+        <!-- 数据行将在这里动态生成 -->
+        <tr>
+            <td>1</td>
+            <td>8TH00001</td>
+            <td>8TH00001零件图</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>8TH00002</td>
+            <td>8TH00002零件图</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
 
-    </tr>
-    </tbody>
-</table>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <script>
     const apiUrl = 'http://localhost:8080/metalPlate/list';
@@ -112,6 +140,75 @@
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
+
+    // 模拟数据
+    etch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const list = data.page.list;
+            list.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.number +"-"+item.name;
+                select.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+
+
+    const data = Array.from({ length: 100 }, (_, i) => ({ id: i + 1, name: `数据项 ${i + 1}` }));
+
+    // 获取 DOM 元素
+    const tableBody = document.getElementById('tableBody');
+    const pageSizeSelect = document.getElementById('pageSize');
+
+    // 默认每页显示 10 条
+    let pageSize = 10;
+
+    // 渲染数据表格
+    function renderData() {
+        tableBody.innerHTML = '';
+        const slicedData = data.slice(0, pageSize);
+        slicedData.forEach(item => {
+            const row = document.createElement('tr');
+            const idCell = document.createElement('td');
+            const numberCell = document.createElement('td');
+            const nameCell = document.createElement('td');
+
+
+            idCell.textContent = item.id;
+            numberCell.textContent = item.number;
+            nameCell.textContent = item.name;
+
+
+
+            idCell.classList.add('px-6', 'py-4', 'whitespace-nowrap');
+            numberCell.classList.add('px-6', 'py-4', 'whitespace-nowrap');
+            nameCell.classList.add('px-6', 'py-4', 'whitespace-nowrap');
+
+
+            row.appendChild(idCell);
+            row.appendChild(numberCell);
+            row.appendChild(nameCell);
+            tableBody.appendChild(row);
+        });
+    }
+
+    // 监听页面大小选择框的变化
+    pageSizeSelect.addEventListener('change', () => {
+        pageSize = parseInt(pageSizeSelect.value);
+        renderData();
+    });
+
+    // 初始化渲染
+    renderData();
 </script>
 </body>
 </html>
