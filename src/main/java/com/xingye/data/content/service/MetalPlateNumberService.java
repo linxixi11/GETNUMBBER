@@ -16,5 +16,7 @@ import java.util.Map;
 public interface MetalPlateNumberService extends IService<MetalPlateNumberEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    String queryMaxSerialNumber(MetalPlateNumberEntity metalPlateNumberEntity);
 }
 

@@ -81,6 +81,9 @@
             </select>
         </div>
     </div>
+    <!-- tab 按钮容器 -->
+    <div id="tab">
+    </div>
     <table id="dataTable" class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
         <tr>
@@ -120,6 +123,7 @@
 <script>
     const apiUrl = 'http://localhost:8080/metalPlate/list';
     const select = document.getElementById('mySelect');
+    const tab = document.getElementById('tab');
 
     fetch(apiUrl)
         .then(response => {
@@ -135,6 +139,12 @@
                 option.value = item.id;
                 option.textContent = item.number +"-"+item.name;
                 select.appendChild(option);
+
+                // 添加 button 到 tab
+                const button = document.createElement('button');
+                button.value = item.id;
+                button.textContent = item.number + "-" + item.name;
+                tab.appendChild(button)
             });
         })
         .catch(error => {
@@ -151,11 +161,19 @@
         })
         .then(data => {
             const list = data.page.list;
+            var i = 1;
             list.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.id;
                 option.textContent = item.number +"-"+item.name;
                 select.appendChild(option);
+                // 添加 button 到 tab
+                const button = document.createElement('button');
+                button.value = item.id;
+                button.textContent = item.number + "-" + item.name;
+                button.className = "tab"+i;
+                tab.appendChild(button);
+                i++;
             });
         })
         .catch(error => {

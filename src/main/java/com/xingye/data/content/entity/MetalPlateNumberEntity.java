@@ -31,7 +31,9 @@ public class MetalPlateNumberEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private Long serialNumber;
+	private String serialNumber;
+
+	private Long typeId;
 	/**
 	 * 
 	 */

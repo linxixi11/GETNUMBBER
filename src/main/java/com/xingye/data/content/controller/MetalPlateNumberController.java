@@ -1,6 +1,7 @@
 package com.xingye.data.content.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,9 +57,19 @@ public class MetalPlateNumberController {
      */
     @RequestMapping("/save")
     public R save(@RequestBody MetalPlateNumberEntity metalPlateNumber){
+        metalPlateNumber.setCreated(new Date());
+        metalPlateNumber.setLastUpdated(new Date());
 		metalPlateNumberService.save(metalPlateNumber);
-
         return R.ok();
+    }
+
+    /**
+     * 保存
+     */
+    @RequestMapping("/max")
+    public R max(@RequestBody MetalPlateNumberEntity metalPlateNumber){
+        String serialNumber = metalPlateNumberService.queryMaxSerialNumber(metalPlateNumber);
+        return R.ok().put("data", serialNumber);
     }
 
     /**

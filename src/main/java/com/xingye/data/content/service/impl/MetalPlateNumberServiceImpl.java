@@ -1,5 +1,6 @@
 package com.xingye.data.content.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,6 +17,9 @@ import com.xingye.data.content.service.MetalPlateNumberService;
 @Service("metalPlateNumberService")
 public class MetalPlateNumberServiceImpl extends ServiceImpl<MetalPlateNumberDao, MetalPlateNumberEntity> implements MetalPlateNumberService {
 
+    @Autowired
+    private MetalPlateNumberDao metalPlateNumberDao;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<MetalPlateNumberEntity> page = this.page(
@@ -24,6 +28,11 @@ public class MetalPlateNumberServiceImpl extends ServiceImpl<MetalPlateNumberDao
         );
 
         return new PageUtils(page);
+    }
+
+    @Override
+    public String queryMaxSerialNumber(MetalPlateNumberEntity metalPlateNumberEntity) {
+        return metalPlateNumberDao.queryMaxSerialNumber(metalPlateNumberEntity);
     }
 
 }

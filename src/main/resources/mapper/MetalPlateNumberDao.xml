@@ -8,11 +8,15 @@
         <result property="id" column="id"/>
         <result property="corp" column="corp"/>
         <result property="serialNumber" column="serial_number"/>
+        <result property="typeId" column="type_id"/>
         <result property="name" column="name"/>
         <result property="roules" column="roules"/>
         <result property="created" column="created"/>
         <result property="lastUpdated" column="last_updated"/>
     </resultMap>
 
+    <select id="queryMaxSerialNumber" parameterType="com.xingye.data.content.entity.MetalPlateNumberEntity" resultType="java.lang.String">
+        select LPAD(ifnull(max(serial_number),0)+1,6,'0') from metal_plate_number where type_id = #{typeId}
+    </select>
 
 </mapper>
