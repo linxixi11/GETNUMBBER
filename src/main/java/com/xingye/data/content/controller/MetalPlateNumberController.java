@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import com.xingye.data.content.entity.MetalPlateNumberQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,8 +36,8 @@ public class MetalPlateNumberController {
      * 列表
      */
     @RequestMapping("/list")
-    public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = metalPlateNumberService.queryPage(params);
+    public R list(@RequestBody MetalPlateNumberQuery query){
+        PageUtils page = metalPlateNumberService.queryPage(query);
 
         return R.ok().put("page", page);
     }

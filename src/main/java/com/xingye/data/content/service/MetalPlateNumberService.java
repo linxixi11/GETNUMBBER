@@ -2,7 +2,9 @@ package com.xingye.data.content.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xingye.data.content.common.utils.PageUtils;
+import com.xingye.data.content.common.utils.Query;
 import com.xingye.data.content.entity.MetalPlateNumberEntity;
+import com.xingye.data.content.entity.MetalPlateNumberQuery;
 
 import java.util.Map;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  */
 public interface MetalPlateNumberService extends IService<MetalPlateNumberEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryPage(MetalPlateNumberQuery query);
 
     String queryMaxSerialNumber(MetalPlateNumberEntity metalPlateNumberEntity);
 }

@@ -30,18 +30,14 @@
     </div>
     <div class="container mx-auto bg-white p-6 rounded shadow">
       <h1 class="text-2xl font-bold mb-4">数据表格列表</h1>
-      <div class="flex justify-between mb-4">
-        <div>
-          <label for="pageSize" class="mr-2">每页显示数量:</label>
-          <select v-model="pageSize" @change="renderData">
-            <option value="10">10 条</option>
-            <option value="20">20 条</option>
-            <option value="30">30 条</option>
-          </select>
-        </div>
-      </div>
       <div id="tab" >
-        <button v-for="(item, index) in list" :key="item.id" :class="'tab' + (index + 1)" @click="handleButtonClick(item.id)">
+        <button
+            v-for="(item, index) in list"
+            :key="item.id"
+            :class="'tab' + (index + 1)"
+            @click="handleButtonClick(item.id)"
+            :disabled="selectedButtonId === item.id"
+        >
           {{ item.number }}-{{ item.name }}
         </button>
       </div>
@@ -60,13 +56,23 @@
         </tr>
         </thead>
         <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
-        <tr v-for="item in slicedData" :key="item.id">
-          <td class="px-6 py-4 whitespace-nowrap">{{ item.id }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ item.number }}</td>
+        <tr v-for="(item,index) in slicedData" :key="item.id">
+          <td class="px-6 py-4 whitespace-nowrap">{{ index+1 }}</td>
+          <td class="px-6 py-4 whitespace-nowrap">{{ item.serialNumber }}{{ item.serialNumber }}</td>
           <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
         </tr>
         </tbody>
       </table>
+      <div class="flex justify-between mb-4">
+        <div>
+          <label for="pageSize" class="mr-2">每页显示数量:</label>
+          <select v-model="pageSize" @change="renderData">
+            <option value="10">10 条</option>
+            <option value="20">20 条</option>
+            <option value="30">30 条</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -83,7 +89,8 @@ export default {
       serialNumber: '',
       chineseName: '',
       pageSize: 10,
-      data: Array.from({ length: 100 }, (_, i) => ({ id: i + 1, number: `8TH0000${i + 1}`, name: `8TH0000${i + 1}零件图` }))
+      selectedButtonId: null,
+      data: []
     };
   },
   computed: {
@@ -109,6 +116,20 @@ export default {
           .catch(error => {
             console.error('获取数据失败:', error);
           });
+    },getNumberList(id) {
+      const params = {
+        typeId : id,
+        pageSize:this.pageSize
+      }
+      // 替换为实际的接口地址
+      axios.post('http://localhost:8080/metalPlateNumber/list',params)
+          .then(response => {
+            this.data = null;
+            this.data = response.data.page.list;
+          })
+          .catch(error => {
+            console.error('获取数据失败:', error);
+          });
     },
     getNumber() {
       const params = {
@@ -128,10 +149,11 @@ export default {
     save(){
       // 构建要传递的 JSON 参数
       const numberJson = {
-        corp: this.selectedOption,
+        corp: this.input2,
         serialNumber: this.serialNumber,
-        name: this.name,
-        roules: this.roules
+        name: this.chineseName,
+        typeId: this.selectedOption,
+        rules: this.rules
       };
       // 替换为实际的取号接口地址
       axios.post('http://localhost:8080/metalPlateNumber/save', numberJson)
@@ -143,6 +165,13 @@ export default {
           .catch(error => {
             console.error('取号失败:', error);
           });
+    },
+    handleButtonClick(id) {
+      this.selectedButtonId = id; // 更新当前被点击的按钮的 id
+      this.getNumberList(id);
+    },
+    handleSelectChange() {
+      this.selectedButtonId = null; // 当选择框改变时，重置被点击的按钮状态
     },
     renderData() {
       // 数据渲染逻辑已在 computed 属性中处理

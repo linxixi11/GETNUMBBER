@@ -41,7 +41,7 @@ public class MetalPlateNumberEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private Integer roules;
+	private Integer rules;
 	/**
 	 * 
 	 */

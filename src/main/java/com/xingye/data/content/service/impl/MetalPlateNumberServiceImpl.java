@@ -1,5 +1,9 @@
 package com.xingye.data.content.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.xingye.data.content.entity.MetalPlateNumberQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -21,13 +25,12 @@ public class MetalPlateNumberServiceImpl extends ServiceImpl<MetalPlateNumberDao
     private MetalPlateNumberDao metalPlateNumberDao;
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<MetalPlateNumberEntity> page = this.page(
-                new Query<MetalPlateNumberEntity>().getPage(params),
-                new QueryWrapper<MetalPlateNumberEntity>()
-        );
-
-        return new PageUtils(page);
+    public PageUtils queryPage(MetalPlateNumberQuery query) {
+        if (query.getPage() == null || query.getPage() < 1) {
+            query.setPage(1L);
+        }
+        Page<MetalPlateNumberEntity> page = new Page(query.getPage(),query.getPageSize());
+        return new PageUtils(metalPlateNumberDao.selectPageByTypeId(page,query.getTypeId()));
     }
 
     @Override
