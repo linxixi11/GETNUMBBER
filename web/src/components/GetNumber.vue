@@ -1,76 +1,169 @@
 <template>
-  <div>
-    <div class="top-section">
-      <div class="input-group">
-        <span>
-          类型:
-        </span>
-        <select v-model="selectedOption" @change="handleSelectChange">
-          <option v-for="item in list" :key="item.id" :value="item.id">{{ item.number }}-{{ item.name }}</option>
-        </select>
-        <span>
-          公司:
-        </span>
-        <input type="text" v-model="input2" />
-        <span>
-          流水号:
-        </span>
-        <input type="text" v-model="serialNumber" />
+  <div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-8">
+    <!-- 头部操作卡片 -->
+    <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-8 rounded-2xl shadow-2xl mb-8 transform transition-all hover:shadow-3xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- 左侧输入组 -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <label class="w-24 text-white/80 font-medium">类型:</label>
+            <select
+                v-model="selectedOption"
+                @change="handleSelectChange"
+                class="flex-1 p-3 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30 focus:ring-2 focus:ring-white/50 text-white placeholder-white/50 transition-all"
+            >
+              <option
+                  v-for="item in list"
+                  :key="item.id"
+                  :value="item.id"
+                  class="text-gray-800"
+              >
+                {{ item.number }}-{{ item.name }}
+              </option>
+            </select>
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="w-24 text-white/80 font-medium">公司:</label>
+            <input
+                type="text"
+                v-model="input2"
+                class="flex-1 p-3 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30 focus:ring-2 focus:ring-white/50 text-white placeholder-white/50 transition-all"
+            />
+          </div>
+        </div>
+
+        <!-- 右侧输入组 -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <label class="w-24 text-white/80 font-medium">流水号:</label>
+            <input
+                type="text"
+                v-model="serialNumber"
+                class="flex-1 p-3 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30 focus:ring-2 focus:ring-white/50 text-white placeholder-white/50 transition-all"
+            />
+          </div>
+          <div class="flex items-center gap-3">
+            <label class="w-24 text-white/80 font-medium">中文:</label>
+            <input
+                type="text"
+                v-model="chineseName"
+                placeholder="中文名称"
+                class="flex-1 p-3 bg-white/20 backdrop-blur-sm rounded-xl border border-white/30 focus:ring-2 focus:ring-white/50 text-white placeholder-white/50 transition-all"
+            />
+          </div>
+        </div>
       </div>
-      <div class="input-group">
-         <span>
-          中文:
-        </span>
-        <input type="text" v-model="chineseName" placeholder="中文名称" />
-      </div>
-      <div class="input-group">
-        <button @click="getNumber">取号键</button>
-        <button @click="save">保存键</button>
+
+      <!-- 操作按钮 -->
+      <div class="flex gap-4">
+        <button
+            @click="getNumber"
+            class="px-6 py-3 bg-emerald-400 hover:bg-emerald-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+        >
+          <i class="fas fa-magic mr-2"></i>取号
+        </button>
+        <button
+            @click="save"
+            class="px-6 py-3 bg-amber-400 hover:bg-amber-500 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+        >
+          <i class="fas fa-save mr-2"></i>保存
+        </button>
       </div>
     </div>
-    <div class="container mx-auto bg-white p-6 rounded shadow">
-      <h1 class="text-2xl font-bold mb-4">数据表格列表</h1>
-      <div id="tab" >
+
+    <!-- 数据展示卡片 -->
+    <div class="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-8">
+      <!-- 标签切换 -->
+      <div class="flex flex-wrap gap-3 mb-6">
         <button
-            v-for="(item, index) in list"
+            v-for="(item) in list"
             :key="item.id"
-            :class="'tab' + (index + 1)"
             @click="handleButtonClick(item.id)"
-            :disabled="selectedButtonId === item.id"
+            :class="[
+              'px-5 py-2.5 rounded-xl font-medium transition-all',
+              'shadow-md hover:shadow-lg',
+              selectedButtonId === item.id
+                ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white'
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+            ]"
         >
+          <i class="fas fa-tag mr-2"></i>
           {{ item.number }}-{{ item.name }}
         </button>
       </div>
-      <table id="dataTable" class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            编号
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            图号
-          </th>
-          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-            名称
-          </th>
-        </tr>
-        </thead>
-        <tbody id="tableBody" class="bg-white divide-y divide-gray-200">
-        <tr v-for="(item,index) in slicedData" :key="item.id">
-          <td class="px-6 py-4 whitespace-nowrap">{{ index+1 }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ item.serialNumber }}{{ item.serialNumber }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
-        </tr>
-        </tbody>
-      </table>
-      <div class="flex justify-between mb-4">
-        <div>
-          <label for="pageSize" class="mr-2">每页显示数量:</label>
-          <select v-model="pageSize" @change="renderData">
-            <option value="10">10 条</option>
-            <option value="20">20 条</option>
-            <option value="30">30 条</option>
+
+      <!-- 数据表格 -->
+      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-100">
+        <table class="w-full">
+          <thead class="bg-gradient-to-r from-blue-400 to-purple-500 text-white">
+          <tr>
+            <th class="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider">编号</th>
+            <th class="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider">图号</th>
+            <th class="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider">名称</th>
+          </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200/50 bg-white">
+          <tr
+              v-for="(item, index) in paginatedData"
+              :key="item.id"
+              class="hover:bg-gray-50/80 transition-colors"
+          >
+            <td class="px-6 py-4 font-mono text-blue-600 font-medium">
+              #{{ (currentPage - 1) * pageSize + index + 1 }}
+            </td>
+            <td class="px-6 py-4 font-medium text-gray-700">
+              <span class="bg-gray-100 px-3 py-1 rounded-md">{{ item.serialNumber }}</span>
+            </td>
+            <td class="px-6 py-4 text-gray-600">{{ item.name }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 分页控制 -->
+      <div class="mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3">
+          <span class="text-gray-600">每页显示:</span>
+          <select
+              v-model="pageSize"
+              @change="currentPage = 1"
+              class="p-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 shadow-sm"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
           </select>
+          <span class="text-gray-600">共 {{ totalItems }} 条记录</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+              @click="currentPage--"
+              :disabled="currentPage === 1"
+              :class="[
+                'px-4 py-2 rounded-lg font-medium transition-all',
+                currentPage === 1
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-md hover:shadow-lg'
+              ]"
+          >
+            <i class="fas fa-chevron-left mr-2"></i>上一页
+          </button>
+          <span class="px-4 py-2 text-gray-600 font-medium">
+            第 {{ currentPage }} 页 / 共 {{ totalPages }} 页
+          </span>
+          <button
+              @click="currentPage++"
+              :disabled="currentPage === totalPages"
+              :class="[
+                'px-4 py-2 rounded-lg font-medium transition-all',
+                currentPage === totalPages
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : 'bg-blue-100 text-blue-600 hover:bg-blue-200 shadow-md hover:shadow-lg'
+              ]"
+          >
+            下一页<i class="fas fa-chevron-right ml-2"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -88,14 +181,28 @@ export default {
       input2: 'HT',
       serialNumber: '',
       chineseName: '',
-      pageSize: 10,
       selectedButtonId: null,
-      data: []
+      data: [],
+      currentPage: 1,
+      pageSize: 10,
     };
   },
   computed: {
-    slicedData() {
-      return this.data.slice(0, this.pageSize);
+    totalItems() {
+      return this.data.length;
+    },
+    totalPages() {
+      return Math.ceil(this.totalItems / this.pageSize);
+    },
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.pageSize;
+      const end = start + this.pageSize;
+      return this.data.slice(start, end);
+    }
+  },
+  watch: {
+    pageSize() {
+      this.currentPage = 1;
     }
   },
   mounted() {
@@ -180,61 +287,36 @@ export default {
 };
 </script>
 
-<style scoped>
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+/* 添加自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-span {
-  text-align: center;
-  font-weight: bold;
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
 }
 
-.top-section {
-  text-align: center;
-  padding: 20px;
-  border: 2px solid black;
+::-webkit-scrollbar-thumb {
+  @apply bg-gradient-to-b from-blue-400 to-purple-500 rounded-full;
 }
 
-.input-group {
-  margin-bottom: 20px;
-}
-#tab button {
-  margin-top: 20px;
-  margin-right: 100px; /* 添加按钮右边距，可根据需要调整数值 */
-}
-input {
-  padding: 5px;
-  margin-right: 10px;
+/* 表格行入场动画 */
+tr {
+  animation: fadeIn 0.3s ease-in;
 }
 
-select {
-  padding: 5px;
-  margin-right: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-#tableSelect {
-  text-align: center;
-  padding: 20px;
-  border: 2px solid black;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
