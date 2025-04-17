@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  resource:
+    static-locations: classpath:/static/
   datasource:
 #    schema: classpath:db/schema.sql   #指定数据表结构文件所在目录
 #    data: classpath:db/data.sql   #指定数据文件所在目录

@@ -14,9 +14,9 @@ import java.util.UUID;
 @Controller
 public class IndexController {
 
-    @GetMapping("/")
-    public String index() {
-        return "index"; // 返回 WEB-INF/views 目录下的 index.jsp 文件
+    @GetMapping(value = "/**/{path:[^\\.]*}")
+    public String redirect() {
+        return "forward:/index.html";
     }
 
     @PostMapping("/upload")
