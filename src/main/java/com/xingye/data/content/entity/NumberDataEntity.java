@@ -15,8 +15,8 @@ import lombok.Data;
  * @date 2025-04-07 15:18:13
  */
 @Data
-@TableName("metal_plate_number")
-public class MetalPlateNumberEntity implements Serializable {
+@TableName("number_data")
+public class NumberDataEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -33,7 +33,7 @@ public class MetalPlateNumberEntity implements Serializable {
 	 */
 	private String serialNumber;
 
-	private Long typeId;
+	private Long type;
 	/**
 	 * 
 	 */
@@ -41,7 +41,7 @@ public class MetalPlateNumberEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private Integer rules;
+	private Integer router;
 	/**
 	 * 
 	 */

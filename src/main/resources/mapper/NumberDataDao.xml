@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.xingye.data.content.dao.MetalPlateNumberDao">
+<mapper namespace="com.xingye.data.content.dao.NumberDataDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.xingye.data.content.entity.MetalPlateNumberEntity" id="metalPlateNumberMap">
+    <resultMap type="com.xingye.data.content.entity.NumberDataEntity" id="metalPlateNumberMap">
         <result property="id" column="id"/>
         <result property="corp" column="corp"/>
-        <result property="serialNumber" column="serial_number"/>
-        <result property="typeId" column="type_id"/>
         <result property="name" column="name"/>
-        <result property="rules" column="rules"/>
+        <result property="type" column="type"/>
+        <result property="serialNumber" column="serial_number"/>
+        <result property="router" column="router"/>
         <result property="created" column="created"/>
         <result property="lastUpdated" column="last_updated"/>
     </resultMap>
 
-    <select id="queryMaxSerialNumber" resultType="java.lang.String">
-        select LPAD(ifnull(max(serial_number),0)+1,6,'0') from metal_plate_number where type_id = #{typeId}
+    <select id="queryMaxSerialNumber" resultType="java.lang.Integer">
+        select ifnull(max(serial_number),select init_serial_number from number_type where number = #{type}) from number_data where type = #{type}
     </select>
 
     <select id="selectPageByTypeId" resultMap="metalPlateNumberMap">
@@ -29,7 +29,7 @@
             t1.rules,
             t1.created,
             t1.last_updated
-        from metal_plate_number t1
+        from number_data t1
         left join metal_plate t2
         on t1.type_id = t2.id
         where type_id = #{typeId}

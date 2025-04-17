@@ -38,6 +38,8 @@ public class NumberTypeEntity implements Serializable {
 	 * 
 	 */
 	private String name;
+
+	private Integer initSerialNumber;
 	/**
 	 * 
 	 */

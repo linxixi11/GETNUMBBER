@@ -2,7 +2,7 @@ package com.xingye.data.content.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.xingye.data.content.entity.MetalPlateNumberEntity;
+import com.xingye.data.content.entity.NumberDataEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,9 +14,9 @@ import org.apache.ibatis.annotations.Param;
  * @date 2025-04-07 15:18:13
  */
 @Mapper
-public interface MetalPlateNumberDao extends BaseMapper<MetalPlateNumberEntity> {
+public interface NumberDataDao extends BaseMapper<NumberDataEntity> {
 
-    String queryMaxSerialNumber(MetalPlateNumberEntity entity);
+    Integer queryMaxSerialNumber(NumberDataEntity entity);
 
-    IPage<MetalPlateNumberEntity> selectPageByTypeId(IPage<MetalPlateNumberEntity> page,@Param("typeId") Long typeId);
+    IPage<NumberDataEntity> selectPageByTypeId(IPage<NumberDataEntity> page, @Param("typeId") Long typeId);
 }

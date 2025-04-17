@@ -7,8 +7,8 @@ public class MetalPlateNumberQuery {
 
     private Long typeId;
 
-    private Long page;
+    private String page;
 
-    private Long pageSize;
+    private String limit;
 
 }
