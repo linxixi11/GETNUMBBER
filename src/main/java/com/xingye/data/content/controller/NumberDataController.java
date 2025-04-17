@@ -23,7 +23,7 @@ import com.xingye.data.content.common.utils.R;
  * @date 2025-04-07 15:18:13
  */
 @RestController
-@RequestMapping("/number/data")
+@RequestMapping("/api/number/data")
 public class NumberDataController {
     @Autowired
     private NumberDataService numberDataService;

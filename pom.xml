@@ -97,8 +97,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.xingye.data.content.GetnumberApplication</mainClass>
-                    <skip>true</skip>
+                    <mainClass>com.xingye.data.content.GetNumberApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

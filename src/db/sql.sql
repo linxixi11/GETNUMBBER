@@ -15,7 +15,7 @@ CREATE TABLE `number_data`  (
                                 `name` varchar(255) NOT NULL COMMENT '名称',
                                 `type` bigint(30) NULL,
                                 `serial_number` int NULL,
-                                `imgSrc` varchar(255) NULL,
+                                `image_base64` varchar(255) NULL,
                                 `router` varchar(255) NULL,
                                 `created` datetime NULL COMMENT '创建时间',
                                 `last_updated` datetime NULL COMMENT '最后更新时间',

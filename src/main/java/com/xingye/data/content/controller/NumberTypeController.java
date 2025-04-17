@@ -20,7 +20,7 @@ import java.util.Map;
  * @date 2025-04-07 15:18:13
  */
 @RestController
-@RequestMapping("/number/type")
+@RequestMapping("/api/number/type")
 public class NumberTypeController {
     @Autowired
     private NumberTypeService numberTypeService;

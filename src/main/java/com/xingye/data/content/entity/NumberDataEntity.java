@@ -38,6 +38,9 @@ public class NumberDataEntity implements Serializable {
 	 * 
 	 */
 	private String name;
+
+	
+	private String imageBase64;
 	/**
 	 * 
 	 */
