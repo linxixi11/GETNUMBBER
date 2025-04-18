@@ -49,7 +49,7 @@ public class NumberTypeEntity implements Serializable {
 	/**
 	 * 
 	 */
-	@TableField(fill = FieldFill.INSERT)
+	@TableField(fill = FieldFill.INSERT_UPDATE) // 必须添加此注解
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime  lastUpdated;
 

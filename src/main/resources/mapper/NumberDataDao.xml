@@ -11,7 +11,13 @@
         <result property="type" column="type"/>
         <result property="serialNumber" column="serial_number"/>
         <result property="router" column="router"/>
-        <result property="imageBase64" column="image_base64"/>
+<!--        <result property="material" column="material"/>-->
+<!--        <result property="thickness" column="thickness"/>-->
+<!--        <result property="qty" column="qty"/>-->
+<!--        <result property="boundingBoxLength" column="bounding_box_length"/>-->
+<!--        <result property="boundingBoxWidth" column="bounding_box_width"/>-->
+<!--        <result property="remark" column="remark"/>-->
+<!--        <result property="imageBase64" column="image_base64"/>-->
         <result property="created" column="created"/>
         <result property="lastUpdated" column="last_updated"/>
     </resultMap>

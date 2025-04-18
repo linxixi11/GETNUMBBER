@@ -1,10 +1,15 @@
 package com.xingye.data.content.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -40,18 +45,29 @@ public class NumberDataEntity implements Serializable {
 	private String name;
 
 	
-	private String imageBase64;
+//	private String imageBase64;
 	/**
 	 * 
 	 */
 	private Integer router;
+
+//	private String material;
+//	private String thickness;
+//	private String qty;
+//	private String boundingBoxLength;
+//	private String boundingBoxWidth;
+//	private String remark;
 	/**
-	 * 
+	 *
 	 */
-	private Date created;
+	@TableField(fill = FieldFill.INSERT)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime created;
 	/**
-	 * 
+	 *
 	 */
-	private Date lastUpdated;
+	@TableField(fill = FieldFill.INSERT_UPDATE) // 必须添加此注解
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime  lastUpdated;
 
 }
