@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xingye.data.content.common.utils.Query;
 import com.xingye.data.content.entity.MetalPlateNumberQuery;
 import com.xingye.data.content.entity.NumberTypeEntity;
+import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,6 +17,7 @@ import com.xingye.data.content.entity.NumberDataEntity;
 import com.xingye.data.content.service.NumberDataService;
 
 import java.util.Map;
+import java.util.Objects;
 
 
 @Service("metalPlateNumberService")
@@ -26,9 +28,15 @@ public class NumberDataServiceImpl extends ServiceImpl<NumberDataDao, NumberData
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
+        QueryWrapper<NumberDataEntity> queryWrapper = new QueryWrapper<>();
+        if (!Objects.isNull(params.get("type"))) {
+            queryWrapper.eq("type", params.get("type"));
+        }
+
         IPage<NumberDataEntity> page = this.page(
                 new Query<NumberDataEntity>().getPage(params),
-                new QueryWrapper<NumberDataEntity>().eq("type",params.get("type"))
+                queryWrapper
         );
         return new PageUtils(page);
     }
